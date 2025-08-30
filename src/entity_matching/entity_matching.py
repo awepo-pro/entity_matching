@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field
 from typing import Any
-import edc.utils.llm_utils as llm_utils
+import entity_matching.utils.llm_utils as llm_utils
 from pathlib import Path
 from tqdm.asyncio import tqdm as async_tqdm
 from tqdm import tqdm

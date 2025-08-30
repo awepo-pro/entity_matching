@@ -7,7 +7,10 @@ authors = [
     { name = "awepo-pro", email = "dc22762@umac.mo" }
 ]
 requires-python = ">=3.10"
-dependencies = []
+dependencies = [
+    "openai>=1.102.0",
+    "tqdm>=4.67.1",
+]
 
 [project.scripts]
 entity-matching = "entity_matching:main"

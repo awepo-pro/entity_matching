@@ -1,2 +1,3 @@
-def main() -> None:
-    print("Hello from entity-matching!")
+from entity_matching.entity_matching import Stemer
+
+__all__ = ['Stemer']
