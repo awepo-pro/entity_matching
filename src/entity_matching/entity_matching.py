@@ -125,7 +125,7 @@ def try_result(operation):
         return Result_T.error(str(e))
 
 class Stemer:
-    def __init__(self, word_definition_db_path: Path | None=None, verbose=False):
+    def __init__(self, word_definition_db_path: Path | None=None, verbose=False, model=None):
         self.word_cnt = 1
         self.word_index_dict = {}
         self.index_word_dict = {}
@@ -133,6 +133,7 @@ class Stemer:
         self.word_definition_dict = {}
         self.word_definition_db_path = word_definition_db_path
         self.verbose = verbose
+        self.api_model = model or 'deepseek-chat'
 
         self.parse_pattern = re.compile(r'```answer\s*(.*?)\s*```', re.DOTALL)
         self._restore_word_definition()
@@ -194,7 +195,7 @@ class Stemer:
                 'definition2': second_definition
             })
 
-            completion = await llm_utils.openai_chat_completion('deepseek-chat', filled_prompt)
+            completion = await llm_utils.openai_chat_completion(self.api_model, filled_prompt)
             answer = str(self._parse_answer(str(completion)))
 
             print(f'{first_entity} and {second_entity} -> {answer}')

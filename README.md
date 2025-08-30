@@ -149,6 +149,27 @@ asyncio.run(main())
 
 ---
 
+## API KEY
+Since it requires LLM to make decision, therefore, API KEY (only require one key) is required stored in `.env` file. The following is the template of `.env` file,
+
+```json
+{
+    "OPENAI_API_KEY": "...",
+    "DEEPSEEK_API_KEY": "...",
+    "DASHSCOPE_API_KEY": "..."
+}
+```
+
+you can use different model (deepseek-V3 as default) by passing the model name in 
+
+```python
+ds = podstem.Stemer(model='qwen-plus')
+```
+
+in this case, the model is `Qwen`
+
+---
+
 ## Notes
 
 * `build()` runs in a synchronous setting.
