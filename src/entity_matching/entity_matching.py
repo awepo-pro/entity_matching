@@ -7,6 +7,7 @@ from tqdm import tqdm
 import json
 import re
 import asyncio
+import logging
 
 PROMPT = """ \
 There are 2 entities and their defintions, are they refer to the same thing in reality? There are some examples, 
@@ -124,24 +125,25 @@ def try_result(operation):
         return Result_T.error(str(e))
 
 class Stemer:
-    def __init__(self, threshold, word_definition_db_path: Path | None=None, verbose=False):
+    def __init__(self, word_definition_db_path: Path | None=None, verbose=False):
         self.word_cnt = 1
         self.word_index_dict = {}
         self.index_word_dict = {}
 
         self.word_definition_dict = {}
-        self.threshold = threshold
-        self.word_definition_db_path = word_definition_db_path or Path('word_definition.jsonl')
+        self.word_definition_db_path = word_definition_db_path
         self.verbose = verbose
 
         self.parse_pattern = re.compile(r'```answer\s*(.*?)\s*```', re.DOTALL)
-
         self._restore_word_definition()
 
     def __del__(self):
         self._store_word_definition()
 
     def _store_word_definition(self):
+        if self.word_definition_db_path is None:
+            return 
+        
         with self.word_definition_db_path.open('w', encoding='utf-8') as output:
             for word, definition in self.word_definition_dict.items():
                 output.write(json.dumps({
@@ -344,52 +346,52 @@ class Stemer:
         return result
 
 
-async def async_main():
-    ds = Stemer(0.8, Path('word_definition.jsonl'), verbose=True)
-
-    data_dict = {
-        '澳門': 'Refers to Macao, the Special Administrative Region of China and former Portuguese colony. A beautiful place',
-        '濠鏡澳': 'An ancient Chinese name for Macao, literally meaning "Oyster Mirror Bay," referring to the area\'s geographic features before it became known as Macao.',
-        # '香港': 'refers to Hong Kong, the Special Administrative Region of China and former British colony.',
-        # '鏡海': 'refers to an ancient poetic name for the waters around Macao, literally meaning "Mirror Sea.'
-    }
-
-    ds.add_dict(data_dict)
-
-    await ds.abuild()
-
-    print('standard representation of: ')
-    for word in data_dict.keys():
-        print(f'{word} -> {ds.stem(word)}')
-
-    print(ds.to_list())
-    
-def main():
-    ds = Stemer(0.8, Path('word_definition.jsonl'), verbose=True)
-
-    data_dict = {
-        '澳門': 'Refers to Macao, the Special Administrative Region of China and former Portuguese colony. A beautiful place',
-        '濠鏡澳': 'An ancient Chinese name for Macao, literally meaning "Oyster Mirror Bay," referring to the area\'s geographic features before it became known as Macao.',
-        # '香港': 'refers to Hong Kong, the Special Administrative Region of China and former British colony.',
-        # '鏡海': 'refers to an ancient poetic name for the waters around Macao, literally meaning "Mirror Sea.'
-    }
-
-    ds.add_dict(data_dict)
-
-    ds.build()
-
-    print('standard representation of: ')
-    print(ds.to_list())
-
 if __name__ == "__main__":
     import logging
 
-    logging.basicConfig(
-        filename="log/edc.log",
-        filemode="a",
-        level=logging.DEBUG,
-        format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
-        datefmt="%m/%d/%Y %H:%M:%S",
-    )
+    async def async_main():
+        ds = Stemer(Path('word_definition.jsonl'), verbose=True)
+
+        data_dict = {
+            '澳門': 'Refers to Macao, the Special Administrative Region of China and former Portuguese colony. A beautiful place',
+            '濠鏡澳': 'An ancient Chinese name for Macao, literally meaning "Oyster Mirror Bay," referring to the area\'s geographic features before it became known as Macao.',
+            # '香港': 'refers to Hong Kong, the Special Administrative Region of China and former British colony.',
+            # '鏡海': 'refers to an ancient poetic name for the waters around Macao, literally meaning "Mirror Sea.'
+        }
+
+        ds.add_dict(data_dict)
+
+        await ds.abuild()
+
+        print('standard representation of: ')
+        for word in data_dict.keys():
+            print(f'{word} -> {ds.stem(word)}')
+
+        print(ds.to_list())
+    
+    def main():
+        ds = Stemer(Path('word_definition.jsonl'), verbose=True)
+
+        data_dict = {
+            '澳門': 'Refers to Macao, the Special Administrative Region of China and former Portuguese colony. A beautiful place',
+            '濠鏡澳': 'An ancient Chinese name for Macao, literally meaning "Oyster Mirror Bay," referring to the area\'s geographic features before it became known as Macao.',
+            # '香港': 'refers to Hong Kong, the Special Administrative Region of China and former British colony.',
+            # '鏡海': 'refers to an ancient poetic name for the waters around Macao, literally meaning "Mirror Sea.'
+        }
+
+        ds.add_dict(data_dict)
+
+        ds.build()
+
+        print('standard representation of: ')
+        print(ds.to_list())
+
+        logging.basicConfig(
+            filename="log/edc.log",
+            filemode="a",
+            level=logging.DEBUG,
+            format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
+            datefmt="%m/%d/%Y %H:%M:%S",
+        )
 
     asyncio.run(async_main())
