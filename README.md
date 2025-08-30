@@ -41,7 +41,7 @@ stem('鏡海')        # 澳門
 
 ### 1. **Install directly from GitHub (recommended)**
 
-If your code is stored in a public GitHub repo (say `https://github.com/anton/entity-matching`), you can install it with:
+If your code is stored in a public GitHub repo, you can install it with:
 
 ```bash
 pip install git+https://github.com/anton/entity-matching.git
@@ -53,10 +53,16 @@ If you have tags or branches, you can specify them:
 
 ```bash
 # Specific branch
-pip install git+https://github.com/awepo-pro/entity_matching.git@dev
+pip install git+https://github.com/awepo-pro/entity_matching.git
 
 # Specific release tag
 pip install git+https://github.com/awepo-pro/entity_matching.git@v1.0.0
+```
+
+If you use `uv`, 
+
+```bash
+uv add git+https://github.com/awepo-pro/entity_matching
 ```
 
 ---
