@@ -9,6 +9,7 @@ authors = [
 requires-python = ">=3.10"
 dependencies = [
     "openai>=1.102.0",
+    "podbug",
     "tqdm>=4.67.1",
 ]
 
@@ -18,3 +19,6 @@ entity-matching = "entity_matching:main"
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[tool.uv.sources]
+podbug = { git = "https://github.com/awepo-pro/podbug.git" }

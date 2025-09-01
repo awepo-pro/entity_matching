@@ -59,12 +59,14 @@ version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "openai" },
+    { name = "podbug" },
     { name = "tqdm" },
 ]
 
 [package.metadata]
 requires-dist = [
     { name = "openai", specifier = ">=1.102.0" },
+    { name = "podbug", git = "https://github.com/awepo-pro/podbug.git" },
     { name = "tqdm", specifier = ">=4.67.1" },
 ]
 
@@ -216,6 +218,11 @@ sdist = { url = "https://files.pythonhosted.org/packages/07/55/da5598ed5c6bdd993
 wheels = [
     { url = "https://files.pythonhosted.org/packages/bd/0d/c9e7016d82c53c5b5e23e2bad36daebb8921ed44f69c0a985c6529a35106/openai-1.102.0-py3-none-any.whl", hash = "sha256:d751a7e95e222b5325306362ad02a7aa96e1fab3ed05b5888ce1c7ca63451345", size = 812015, upload-time = "2025-08-26T20:50:27.219Z" },
 ]
+
+[[package]]
+name = "podbug"
+version = "0.1.0"
+source = { git = "https://github.com/awepo-pro/podbug.git#638add6de6cef5e4a635836acb3b1d71406058d9" }
 
 [[package]]
 name = "pydantic"

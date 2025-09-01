@@ -8,6 +8,7 @@ import json
 import re
 import asyncio
 import logging
+from podbug.debug import Result_T, try_result
 
 PROMPT = """ \
 There are 2 entities and their defintions, are they refer to the same thing in reality? There are some examples, 
@@ -51,78 +52,6 @@ entity 2: {entity2}, {definition2}
 << Output >>
 
 """
-
-class Result_T(BaseModel):
-    data: Any = Field(default=None)
-    err: str | None = Field(default=None)
-
-    def is_ok(self):
-        return not self.err
-
-    def is_err(self):
-        return self.err is not None
-
-    def __str__(self):
-        """String representation"""
-        if self.err is not None:
-            return f"Result(err='{self.err}')"
-        return str(self.data)
-    
-    def __repr__(self):
-        """Debug representation"""
-        if self.err is not None:
-            return f"Result(err='{self.err}')"
-        return f"Result(data={repr(self.data)})"
-    
-    def __bool__(self):
-        """Boolean evaluation - True if no error"""
-        return self.err is None
-    
-    def unwrap(self):
-        """Get the data - only use when you're sure there's no error"""
-        return self.data
-    
-    def unwrap_or(self, default):
-        """Get the data or return default if there's an error"""
-        if self.err is not None:
-            return default
-        return self.data
-    
-    def and_then(self, func) -> "Result_T":
-        """Chain operations - only applies func if no error"""
-        if self.err is not None:
-            return self
-        try:
-            return func(self.data)
-        except Exception as e:
-            return Result_T.error(str(e))
-        
-    @classmethod
-    def ok(cls, data) -> "Result_T":
-        """Create a successful result"""
-        return cls(data=data)
-    
-    @classmethod
-    def error(cls, err: str) -> "Result_T":
-        """Create an error result"""
-        return cls(err=err)
-    
-    def __getitem__(self, key):
-        return self.data[key]
-    
-    def __len__(self):
-        return len(self.data) if self.data is not None else 0
-    
-def try_result(operation):
-    try:
-        if callable(operation):
-            # call it if it's callable
-            return Result_T.ok(operation())
-        else:
-            # if it's already a Result_T, return as-is
-            return operation if isinstance(operation, Result_T) else Result_T.ok(operation)
-    except Exception as e:
-        return Result_T.error(str(e))
 
 class Stemer:
     def __init__(self, word_definition_db_path: Path | None=None, verbose=False, model=None):
