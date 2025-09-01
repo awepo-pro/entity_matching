@@ -115,8 +115,12 @@ def fast_openai_chat_completion(model, system_prompt, history=[], temperature=0,
     base_url = None
     api_key = None
 
-    with open('.env', 'r') as f: 
-        local_env_setting = json.load(f)
+    local_setting_path = Path('.env')
+    local_env_setting = {}
+
+    if local_setting_path.exists():
+        with local_setting_path.open('r') as f: 
+            local_env_setting = json.load(f)
 
     if model.startswith('gpt'):
         base_url = None
