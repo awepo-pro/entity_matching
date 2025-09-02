@@ -1,5 +1,3 @@
-from pydantic import BaseModel, Field
-from typing import Any
 import entity_matching.utils.llm_utils as llm_utils
 from pathlib import Path
 from tqdm.asyncio import tqdm as async_tqdm
@@ -57,14 +55,13 @@ entity 2: {entity2}, {definition2}
 
 # TODO: create base class to reduce code
 class Stemer:
-    def __init__(self, word_definition_db_path: Path | None=None, verbose=False, model=None):
+    def __init__(self, word_definition_db_path: Path | None=None, model=None):
         self.word_cnt = 1
         self.word_index_dict = {}
         self.index_word_dict = {}
 
         self.word_definition_dict = {}
         self.word_definition_db_path = word_definition_db_path
-        self.verbose = verbose
         self.api_model = model or 'deepseek-chat'
 
         self.parse_pattern = re.compile(r'```answer\s*(.*?)\s*```', re.DOTALL)
@@ -95,8 +92,8 @@ class Stemer:
                 jl: Result_T = try_result(json.loads(line))
 
                 if not jl:
-                    print(f'Error: fail to pass {line}')
-                    print(f'The exact error is {jl.err}')
+                    logger.error(f'Error: fail to pass {line}')
+                    logger.error(f'The exact error is {jl.err}')
                     continue
                 
                 backup_word_definition_dict[jl['word']] = jl['definition']
@@ -121,7 +118,6 @@ class Stemer:
             return None
 
         result = answer.group(1).strip('\n')
-
         logger.info(result)
 
         return result
@@ -141,14 +137,12 @@ class Stemer:
         answer = str(self._parse_answer(completion))
 
         if not answer:
-            print(f'cannot parse {completion}')
+            logger.error(f'cannot parse {completion}')
             return False
         
         return answer.upper() == "YES"
     
     def _matched(self, va, vb):
-        # print(f'{va} root: {self.find(va)} and {vb} root: {self.find(vb)} => {self.find(va).unwrap() != va or self.find(vb).unwrap() != vb}')
-        # exit()
         return self.find(va).unwrap() != va or self.find(vb).unwrap() != vb
 
     def _link_to_most_similar(self):
@@ -193,7 +187,7 @@ class Stemer:
             return Result_T()
 
         self.fa[b] = a
-        print(f'{self.index_word_dict[a]} -> {self.index_word_dict[b]}') if self.verbose else None
+        logger.info(f'{self.index_word_dict[a]} -> {self.index_word_dict[b]}')
 
         return Result_T()
     
@@ -247,7 +241,7 @@ class AStemer:
         self.verbose = verbose
         self.api_model = model or 'deepseek-chat'
 
-        self.parse_pattern = re.compile(r'```answer\s*\\n(.*?)\\n\s*```', re.DOTALL)
+        self.parse_pattern = re.compile(r'```answer\s*(.*?)\s*```', re.DOTALL)
         self._restore_word_definition()
 
     def __del__(self):
@@ -275,8 +269,9 @@ class AStemer:
                 jl: Result_T = try_result(json.loads(line))
 
                 if not jl:
-                    print(f'Error: fail to pass {line}')
-                    print(f'The exact error is {jl.err}')
+                    if self.verbose:
+                        logger.info(f'Error: fail to pass {line}')
+                        logger.info(f'The exact error is {jl.err}')
                     continue
                 
                 backup_word_definition_dict[jl['word']] = jl['definition']
@@ -295,49 +290,58 @@ class AStemer:
     def add_dict(self, data_dict: dict):
         return [self.add(word, definition) for word, definition in data_dict.items()]
     
-    async def _async_link_to_most_similar(self):
-        async def _async_entity_matching(first_entity, second_entity):
-            first_definition = self.word_definition_dict[first_entity]
-            second_definition = self.word_definition_dict[second_entity]
+    async def _async_entity_matching(self, first_entity, second_entity):
+        first_definition = self.word_definition_dict[first_entity]
+        second_definition = self.word_definition_dict[second_entity]
 
-            filled_prompt = PROMPT.format_map({
-                'entity1': first_entity,
-                'definition1': first_definition,
-                'entity2': second_entity,
-                'definition2': second_definition
-            })
+        filled_prompt = PROMPT.format_map({
+            'entity1': first_entity,
+            'definition1': first_definition,
+            'entity2': second_entity,
+            'definition2': second_definition
+        })
 
-            completion = await llm_utils.openai_chat_completion(self.api_model, filled_prompt)
-            answer = str(self._parse_answer(str(completion)))
+        completion = await llm_utils.openai_chat_completion(self.api_model, filled_prompt)
+        answer = str(self._parse_answer(str(completion)))
 
-            print(f'{first_entity} and {second_entity} -> {answer}')
+        logger.info(f'{first_entity} and {second_entity} -> {answer}')
 
-            if not answer:
-                print(f'cannot parse {completion}')
-                return False, first_entity, second_entity
-            
-            return answer.upper() == "YES", first_entity, second_entity
-
-        length = len(self.word_definition_dict)
+        if not answer:
+            logger.info(f'cannot parse {completion}') if self.verbose else None
+            return False, first_entity, second_entity
         
+        return answer.upper() == "YES", first_entity, second_entity
+    
+    def _matched(self, va, vb):
+        logger.info(f'{va} ({self.find(va)}) and {vb} ({self.find(vb)}) -> {self.find(va).unwrap() != va or self.find(vb).unwrap() != vb}')
+        return self.find(va).unwrap() != va or self.find(vb).unwrap() != vb
+    
+    async def _async_link_to_most_similar(self):
+        length = len(self.word_definition_dict)
+
         # Create all tasks for concurrent execution
-        tasks = []
         for i in range(0, length - 1):
+            tasks = []
+
             for j in range(i + 1, length):
                 va = self.index_word_dict[i + 1]
                 vb = self.index_word_dict[j + 1]
-                tasks.append(_async_entity_matching(va, vb))
+
+                if not self._matched(va, vb):
+                    logger.info(f'not matched {va} and {vb}')
+                    tasks.append(self._async_entity_matching(va, vb))
+
+            logger.info(f'{i} iteration: API call -> {len(tasks)}')
         
-        # Execute all tasks concurrently with progress tracking
-        for coro in async_tqdm.as_completed(tasks, desc="Processing entity pairs"):
-            should_match, entity_a, entity_b = await coro
-            if should_match:
-                self._merge(entity_a, entity_b)
+            # Execute all tasks concurrently with progress tracking
+            for coro in async_tqdm.as_completed(tasks, desc="Processing entity pairs"):
+                should_match, entity_a, entity_b = await coro
+                if should_match:
+                    self._merge(entity_a, entity_b)
 
     async def abuild(self):
         n = self.word_cnt
         self.fa = list(range(n))  # equivalent to std::iota
-        self.size = [1] * n
         self.index_word_dict = {val: key for key, val in self.word_index_dict.items()}
 
         await self._async_link_to_most_similar()
@@ -367,14 +371,8 @@ class AStemer:
         if a == b:
             return Result_T()
         
-
-        # weighted-union heuristic: attach smaller tree under root of larger tree
-        if self.size[a] <= self.size[b]:
-            a, b = b, a  # swap
-        
-        self.size[a] += self.size[b]
         self.fa[b] = a
-        print(f'{self.index_word_dict[a]} -> {self.index_word_dict[b]}') if self.verbose else None
+        logger.info(f'{self.index_word_dict[a]} -> {self.index_word_dict[b]}') if self.verbose else None
 
         return Result_T()
     
@@ -382,7 +380,7 @@ class AStemer:
         if self.is_contained(x).is_err():
             return Result_T.error('no such word')
         
-        return Result_T.ok(self._find(self.word_index_dict[x]))
+        return Result_T.ok(self.index_word_dict[self._find(self.word_index_dict[x])])
 
     def is_contained(self, word):
         return Result_T() if word in self.word_index_dict else Result_T.error('no such word')
@@ -430,28 +428,8 @@ if __name__ == "__main__":
         datefmt="%m/%d/%Y %H:%M:%S",
     )
 
-    # async def async_main():
-    #     ds = Stemer(Path('word_definition.jsonl'), verbose=True)
-
-    #     data_dict = {
-    #         '澳門': 'Refers to Macao, the Special Administrative Region of China and former Portuguese colony. A beautiful place',
-    #         '濠鏡澳': 'An ancient Chinese name for Macao, literally meaning "Oyster Mirror Bay," referring to the area\'s geographic features before it became known as Macao.',
-    #         # '香港': 'refers to Hong Kong, the Special Administrative Region of China and former British colony.',
-    #         # '鏡海': 'refers to an ancient poetic name for the waters around Macao, literally meaning "Mirror Sea.'
-    #     }
-
-    #     ds.add_dict(data_dict)
-
-    #     await ds.abuild()
-
-    #     print('standard representation of: ')
-    #     for word in data_dict.keys():
-    #         print(f'{word} -> {ds.stem(word)}')
-
-    #     print(ds.to_dict())
-    
-    def main():
-        ds = Stemer(Path('word_definition.jsonl'), verbose=True)
+    async def async_main():
+        ds = AStemer(Path('word_definition.jsonl'), verbose=True)
 
         data_dict = {
             '澳門': 'Refers to Macao, the Special Administrative Region of China and former Portuguese colony. A beautiful place',
@@ -462,10 +440,30 @@ if __name__ == "__main__":
 
         ds.add_dict(data_dict)
 
-        ds.build()
+        await ds.abuild()
 
-        print('standard representation of: ')
-        print(ds.to_dict())
+        logger.info('standard representation of: ')
+        for word in data_dict.keys():
+            logger.info(f'{word} -> {ds.stem(word)}')
 
-    # asyncio.run(async_main())
-    main()
+        logger.info(ds.to_dict())
+    
+    # def main():
+    #     ds = Stemer(Path('word_definition.jsonl'), verbose=True)
+
+    #     data_dict = {
+    #         '澳門': 'Refers to Macao, the Special Administrative Region of China and former Portuguese colony. A beautiful place',
+    #         '濠鏡澳': 'An ancient Chinese name for Macao, literally meaning "Oyster Mirror Bay," referring to the area\'s geographic features before it became known as Macao.',
+    #         '香港': 'refers to Hong Kong, the Special Administrative Region of China and former British colony.',
+    #         '鏡海': 'refers to an ancient poetic name for the waters around Macao, literally meaning "Mirror Sea.'
+    #     }
+
+    #     ds.add_dict(data_dict)
+
+    #     ds.build()
+
+    #     logger.info('standard representation of: ')
+    #     logger.info(ds.to_dict())
+
+    asyncio.run(async_main())
+    # main()
