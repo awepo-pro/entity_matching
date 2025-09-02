@@ -84,10 +84,21 @@ async def openai_chat_completion(model, system_prompt, history=[], temperature=0
         
         exit()
     
+    import httpx 
+
+    limits = httpx.Limits(
+        max_connections=20,
+        max_keepalive_connections=10,
+        keepalive_expiry=60
+    )
+
+    http_client = httpx.AsyncClient(limits=limits, timeout=60.0)
+    
     aclient = AsyncOpenAI(
         api_key=api_key,
         base_url=base_url,
         timeout=60,
+        http_client=http_client
     )
 
     response = None

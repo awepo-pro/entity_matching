@@ -12,3 +12,5 @@ wheels/
 *.jsonl
 
 log/
+
+ds_state.json
