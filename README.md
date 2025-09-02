@@ -90,6 +90,11 @@ check my [blog](https://awepo-pro.github.io/posts/entity-matching/) for more det
 
 ---
 
+## Bug discovered
+* [ ] async function create too much API call
+
+---
+
 ## License
 
 MIT License
