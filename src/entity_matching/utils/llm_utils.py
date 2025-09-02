@@ -187,4 +187,6 @@ def fast_openai_chat_completion(model, system_prompt, history=[], temperature=0,
             print(messages)
 
     logging.debug(f"Model: {model}\nPrompt:\n {messages}\n openaiResult: {response.choices[0].message}")
+
+    return response.choices[0].message.content
     
