@@ -252,16 +252,18 @@ class Stemer(BaseStemer):
                 score = similarity[i][j]
 
                 if score >= threshold:
-                    result.append((i, j))
+                    result.append((i, j, score))
 
         return result
     
     def _link_to_most_similar(self, word_definition_list):
-        input_def = [word_definition_tuple[1] for word_definition_tuple in word_definition_list]
+        input_def = [word_definition_tuple[0] for word_definition_tuple in word_definition_list]
+        print(f'input: {input_def}')
 
         embeddings = self.model.encode(input_def)
 
         similarities = self.model.similarity(embeddings, embeddings)
+
         matched = self.matching(similarities)
 
         return matched
@@ -287,8 +289,9 @@ class Stemer(BaseStemer):
         for word_definition_list in self.FET_data_dict.values():
             result = self._link_to_most_similar(word_definition_list)
 
-            for result_tuple in result:
-                print(f'{word_definition_list[result_tuple[0]][0]} <-> {word_definition_list[result_tuple[1]][0]}')
+            with open(f'output.txt', 'a', encoding='utf-8') as output:
+                for result_tuple in result:
+                    print(f'{word_definition_list[result_tuple[0]][0]} <-> {word_definition_list[result_tuple[1]][0]} with {result_tuple[2]}', file=output)
 
 class AStemer(BaseStemer):
     def __init__(self, model=None):
@@ -378,15 +381,20 @@ if __name__ == "__main__":
         datefmt="%m/%d/%Y %H:%M:%S",
     )
 
-    data_dict = {
-        '澳門': {'FET': 'location', 'definition': 'Refers to Macao, the Special Administrative Region of China and former Portuguese colony. A beautiful place'},
-        '濠鏡澳': {'FET': 'location', 'definition': 'An ancient Chinese name for Macao, literally meaning "Oyster Mirror Bay," referring to the area\'s geographic features before it became known as Macao.'},
-        '香港': {'FET': 'location', 'definition': 'refers to Hong Kong, the Special Administrative Region of China and former British colony.'},
-        'hk': {'FET': 'location', 'definition': 'refers to HK'},
-        '鏡海': {'FET': 'location', 'definition': 'refers to an ancient poetic name for the waters around Macao, literally meaning "Mirror Sea.'},
-        'pencil': {'FET': 'tool', 'definition': 'refer to a pen'},
-        'pen': {'FET': 'tool', 'definition': 'refer to a pen'}
-    }
+    # data_dict = {
+    #     '澳門': {'FET': 'location', 'definition': 'Refers to Macao, the Special Administrative Region of China and former Portuguese colony. A beautiful place'},
+    #     '濠鏡澳': {'FET': 'location', 'definition': 'An ancient Chinese name for Macao, literally meaning "Oyster Mirror Bay," referring to the area\'s geographic features before it became known as Macao.'},
+    #     '香港': {'FET': 'location', 'definition': 'refers to Hong Kong, the Special Administrative Region of China and former British colony.'},
+    #     'hk': {'FET': 'location', 'definition': 'refers to HK'},
+    #     '鏡海': {'FET': 'location', 'definition': 'refers to an ancient poetic name for the waters around Macao, literally meaning "Mirror Sea.'},
+    #     'pencil': {'FET': 'tool', 'definition': 'refer to a pen'},
+    #     'pen': {'FET': 'tool', 'definition': 'refer to a pen'}
+    # }
+
+    with open('data_v10.json', 'r', encoding='utf-8') as input:
+        data_dict = json.load(input)
+
+    
 
     # data_dict: list[EntityMatchingInput] = [
     #     EntityMatchingInput(entity='澳門', definition='Refers to Macao, the Special Administrative Region of China and former Portuguese colony. A beautiful place', metadata={'FET': 'location'})

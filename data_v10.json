@@ -1,0 +1,742 @@
+{
+    "温": {
+        "FET": "PROPERTY",
+        "definition": "Warm property in TCM that helps to dispel cold, promote circulation, and strengthen yang energy in the body."
+    },
+    "微苦": {
+        "FET": "PROPERTY",
+        "definition": "Slightly bitter taste that often indicates mild heat-clearing or drying properties in TCM herbs."
+    },
+    "辛": {
+        "FET": "PROPERTY",
+        "definition": "Pungent taste in TCM herbs that typically has dispersing and moving properties, helping to release exterior pathogens and promote circulation."
+    },
+    "麻黄": {
+        "FET": "HERB",
+        "definition": "A key herb in TCM known for its strong diaphoretic properties, used to release exterior wind-cold, promote sweating, and relieve asthma and edema."
+    },
+    "膀胱经": {
+        "FET": "MERIDIAN",
+        "definition": "One of the twelve primary meridians in TCM, also known as the Bladder Channel, which runs along the back and is associated with water element, governing fluid metabolism and exterior defense."
+    },
+    "归肺": {
+        "FET": "PROPERTY",
+        "definition": "Refers to the property of an herb or substance that has a particular affinity for the Lung organ system in TCM, meaning it primarily acts on and influences lung-related functions and pathologies."
+    },
+    "微温": {
+        "FET": "PROPERTY",
+        "definition": "A mild warming property in TCM herbs that gently promotes circulation and yang energy without causing excessive heat or dryness."
+    },
+    "甘": {
+        "FET": "PROPERTY",
+        "definition": "The sweet flavor property in TCM that tonifies, harmonizes, and moistens the body, often used to strengthen qi and blood."
+    },
+    "脾经": {
+        "FET": "MERIDIAN",
+        "definition": "The Spleen Meridian in TCM, responsible for transforming and transporting nutrients, maintaining digestive health, and supporting the production of qi and blood."
+    },
+    "归膀胱": {
+        "FET": "MERIDIAN_REFERENCE",
+        "definition": "undefinied"
+    },
+    "肝": {
+        "FET": "ORGAN",
+        "definition": "undefinied"
+    },
+    "防风": {
+        "FET": "HERB",
+        "definition": "A commonly used TCM herb known for its ability to dispel wind, release exterior conditions, and treat various wind-related disorders."
+    },
+    "祛风解表": {
+        "FET": "THERAPEUTIC_ACTION",
+        "definition": "A therapeutic action that involves expelling wind pathogens from the body's surface and relieving exterior symptoms such as fever and headache."
+    },
+    "胜湿止痛": {
+        "FET": "THERAPEUTIC_EFFECT",
+        "definition": "The ability to overcome dampness in the body and alleviate pain, particularly joint pain and muscle aches caused by damp conditions."
+    },
+    "止痉": {
+        "FET": "THERAPEUTIC_ACTION",
+        "definition": "The property of stopping spasms, convulsions, or muscle cramps, often used in treating conditions involving involuntary muscle contractions."
+    },
+    "外感表证": {
+        "FET": "SYNDROME",
+        "definition": "Exterior syndrome patterns caused by external pathogenic factors like wind, cold, or heat, presenting with symptoms such as fever, chills, and body aches."
+    },
+    "胜湿": {
+        "FET": "THERAPEUTIC_ACTION",
+        "definition": "The therapeutic action of eliminating or overcoming dampness in the body, often used to treat conditions like edema or joint pain caused by damp pathogens."
+    },
+    "辛散祛风解表": {
+        "FET": "THERAPEUTIC_PROPERTY",
+        "definition": "A property describing herbs that are pungent and dispersing, used to expel wind and release exterior pathogenic factors from the body's surface."
+    },
+    "辛温发散": {
+        "FET": "PROPERTY",
+        "definition": "Pungent and warm properties that promote dispersion and circulation, helping to release exterior conditions and alleviate stagnation."
+    },
+    "外感风寒": {
+        "FET": "SYNDROME",
+        "definition": "External contraction of wind-cold pathogens, typically causing chills, headache, and body pain."
+    },
+    "气味俱升": {
+        "FET": "HERBAL_PROPERTY",
+        "definition": "A characteristic of herbs where both the aroma and taste have ascending properties, helping to direct therapeutic effects upward and outward."
+    },
+    "风热表证": {
+        "FET": "SYNDROME",
+        "definition": "Exterior syndrome caused by wind-heat pathogens, presenting with symptoms like sore throat, fever, and slight sweating."
+    },
+    "风湿": {
+        "FET": "PATHOGEN_COMPLEX",
+        "definition": "Pathogenic wind combined with dampness, often causing joint pain, swelling, or stiffness in TCM patterns."
+    },
+    "止痛": {
+        "FET": "THERAPEUTIC_ACTION",
+        "definition": "The action of relieving pain, often through promoting circulation, reducing inflammation, or dispelling pathogenic factors."
+    },
+    "甘缓微温不峻烈": {
+        "FET": "HERBAL_PROPERTY",
+        "definition": "A mild, slightly warm, and sweet property that acts gently without being too harsh or aggressive in its therapeutic effects."
+    },
+    "风寒表证": {
+        "FET": "SYNDROME",
+        "definition": "A condition in TCM caused by wind-cold pathogens invading the body's exterior, characterized by chills, fever, headache, and body aches."
+    },
+    "独活": {
+        "FET": "HERB",
+        "definition": "A medicinal herb used to dispel wind-dampness, relieve pain, and treat conditions like arthritis and headaches."
+    },
+    "羌活": {
+        "FET": "HERB",
+        "definition": "A TCM herb known for its ability to release the exterior, dispel wind-cold, and alleviate pain in the upper body."
+    },
+    "头痛身痛": {
+        "FET": "SYMPTOM",
+        "definition": "Symptoms of headache and generalized body pain, often associated with exterior wind-cold invasion in TCM."
+    },
+    "荆防败毒散": {
+        "FET": "FORMULA",
+        "definition": "A classical TCM formula combining Schizonepeta and Saposhnikovia to treat wind-cold exterior conditions with symptoms of chills, fever, and body pain."
+    },
+    "《摄生众妙方》": {
+        "FET": "CLASSICAL_TEXT",
+        "definition": "An important classical TCM text that documents various formulas and treatment methods for health preservation."
+    },
+    "恶风寒": {
+        "FET": "SYMPTOM",
+        "definition": "A symptom characterized by aversion to wind and cold, typically indicating an exterior wind-cold syndrome."
+    },
+    "荆芥": {
+        "FET": "HERB",
+        "definition": "A medicinal herb used to release the exterior, dispel wind, and promote rash eruption in TCM treatments."
+    },
+    "头痛如裹": {
+        "FET": "SYMPTOM",
+        "definition": "A sensation of the head feeling tightly wrapped or heavy, often due to dampness obstructing the clear yang and causing stagnation in TCM."
+    },
+    "外感风湿": {
+        "FET": "SYNDROME",
+        "definition": "External contraction of wind-damp pathogenic factors, which can lead to symptoms like headache, body heaviness, and joint pain."
+    },
+    "川芎": {
+        "FET": "HERB",
+        "definition": "A key herb for promoting blood circulation, relieving pain, and assisting in dispelling wind-dampness from the body."
+    },
+    "身重肢痛": {
+        "FET": "SYMPTOM",
+        "definition": "Symptoms of body heaviness and limb pain, typically caused by dampness accumulation obstructing qi and blood flow."
+    },
+    "羌活胜湿汤": {
+        "FET": "FORMULA",
+        "definition": "A classical TCM formula designed to expel wind-dampness, relieve pain, and treat conditions like headache and body heaviness."
+    },
+    "藁本": {
+        "FET": "HERB",
+        "definition": "A herb used to dispel wind-cold-dampness, particularly effective for treating headaches located in the top of the head."
+    },
+    "《内外伤辨惑论》": {
+        "FET": "CLASSICAL_TEXT",
+        "definition": "An important TCM text that discusses the differentiation between internal and external disorders, containing valuable formulas like Qianghuo Shengshi Tang."
+    },
+    "连翘": {
+        "FET": "HERB",
+        "definition": "A key herb for clearing heat and toxins, especially effective for upper respiratory infections, sore throat, and febrile diseases in TCM."
+    },
+    "蝉蜕": {
+        "FET": "HERB",
+        "definition": "The cicada slough used to disperse wind-heat, benefit the throat, promote rash eruption, and calm spasms or convulsions."
+    },
+    "咽痛口渴": {
+        "FET": "SYMPTOM",
+        "definition": "Symptoms of sore throat and thirst indicating heat or dryness affecting the lung and stomach systems in TCM."
+    },
+    "辛凉解表药": {
+        "FET": "HERB_CATEGORY",
+        "definition": "A category of herbs with pungent and cooling properties that release exterior wind-heat conditions without overly drying the body."
+    },
+    "发热恶风": {
+        "FET": "SYMPTOM",
+        "definition": "A pattern of fever with aversion to wind, typical of wind-heat exterior syndrome where the body's defensive qi is compromised."
+    },
+    "薄荷": {
+        "FET": "HERB",
+        "definition": "A cooling, aromatic herb that disperses wind-heat, clears the head and eyes, soothes the throat, and promotes qi circulation."
+    },
+    "固表而不留邪": {
+        "FET": "THERAPEUTIC_PRINCIPLE",
+        "definition": "A therapeutic principle where herbs strengthen the body's exterior defense without trapping pathogenic factors inside."
+    },
+    "肌表不固": {
+        "FET": "SYNDROME",
+        "definition": "A condition in TCM where the body's surface defense is weak, making one susceptible to external pathogenic invasions."
+    },
+    "发散作用温和": {
+        "FET": "PROPERTY",
+        "definition": "A gentle dispersing action that releases exterior pathogens without overly draining the body's qi or fluids."
+    },
+    "黄芪": {
+        "FET": "HERB",
+        "definition": "A key tonic herb in TCM that tonifies qi, strengthens the spleen and lungs, and reinforces the body's defensive system."
+    },
+    "白术": {
+        "FET": "HERB",
+        "definition": "A TCM herb that tonifies spleen qi, dries dampness, and helps stabilize the exterior by strengthening middle jiao function."
+    },
+    "扶正祛邪": {
+        "FET": "THERAPEUTIC_PRINCIPLE",
+        "definition": "A fundamental TCM treatment strategy that simultaneously supports the body's healthy qi while eliminating pathogenic factors."
+    },
+    "卫气不足": {
+        "FET": "SYNDROME",
+        "definition": "Deficiency of defensive qi (wei qi) that protects the body's surface, leading to frequent colds and susceptibility to external pathogens."
+    },
+    "祛邪而不伤正": {
+        "FET": "THERAPEUTIC_PRINCIPLE",
+        "definition": "Eliminating pathogenic factors without damaging the body's healthy qi, a key principle in treating deficiency-excess complex conditions."
+    },
+    "玉屏风散": {
+        "FET": "FORMULA",
+        "definition": "A classic TCM formula consisting of Huangqi, Baizhu, and Fangfeng, designed to tonify qi and strengthen the body's defensive barrier."
+    },
+    "感冒风邪": {
+        "FET": "SYNDROME",
+        "definition": "Invasion of wind pathogens that cause common cold symptoms, often affecting those with weak defensive qi."
+    },
+    "《丹溪心法》": {
+        "FET": "CLASSICAL_TEXT",
+        "definition": "A classical TCM text by Zhu Danxi that documents important formulas and medical theories from the Jin-Yuan period."
+    },
+    "益卫固表药": {
+        "FET": "HERB_CATEGORY",
+        "definition": "A category of herbs that tonify defensive qi and strengthen the body's exterior defense mechanism against external pathogens."
+    },
+    "瘾疹瘙痒": {
+        "FET": "SYMPTOM",
+        "definition": "A TCM condition characterized by recurrent itchy rashes or hives that appear and disappear unpredictably, often caused by wind pathogens."
+    },
+    "风疹瘙痒": {
+        "FET": "SYMPTOM",
+        "definition": "Itchy skin rashes or eruptions typically associated with wind-heat or wind-cold pathogens, causing discomfort and the need to scratch."
+    },
+    "祛风止痒": {
+        "FET": "THERAPEUTIC_METHOD",
+        "definition": "A treatment principle in TCM aimed at eliminating wind pathogens to relieve itching, particularly in skin disorders."
+    },
+    "风邪": {
+        "FET": "PATHOGEN",
+        "definition": "Pathogenic wind factor in TCM that can cause sudden onset of symptoms, movement of symptoms throughout the body, and various skin conditions with itching."
+    },
+    "皮肤病": {
+        "FET": "DISEASE",
+        "definition": "A broad category of skin diseases and disorders treated in TCM, including rashes, eczema, hives, and other conditions affecting the skin's health and appearance."
+    },
+    "风热": {
+        "FET": "SYNDROME",
+        "definition": "A pathogenic factor in TCM characterized by wind combined with heat, typically causing symptoms like fever, sore throat, and red, inflamed skin conditions."
+    },
+    "药性平和": {
+        "FET": "PROPERTY",
+        "definition": "Describes medicinal substances with mild, balanced properties that are neither strongly heating nor cooling, making them suitable for various conditions."
+    },
+    "祛风": {
+        "FET": "THERAPEUTIC_ACTION",
+        "definition": "A therapeutic principle in TCM aimed at eliminating wind pathogens from the body, often used to treat conditions like itching, pain, and spasms."
+    },
+    "风寒": {
+        "FET": "SYNDROME",
+        "definition": "A pathogenic factor in TCM characterized by wind combined with cold, typically causing symptoms like chills, headache, and body aches."
+    },
+    "消风散": {
+        "FET": "FORMULA",
+        "definition": "A classical TCM formula documented in the \"Heji Jufang\" for treating wind-cold conditions, particularly those affecting the skin and surface of the body."
+    },
+    "白芷": {
+        "FET": "HERB",
+        "definition": "A TCM herb known for its ability to dispel wind-cold, relieve pain, and reduce nasal congestion and headaches."
+    },
+    "苍耳子": {
+        "FET": "HERB",
+        "definition": "The fruit of Xanthium sibiricum, used in TCM to dispel wind-cold, relieve nasal obstruction, and treat sinusitis and headaches."
+    },
+    "《和剂局方》": {
+        "FET": "CLASSICAL_TEXT",
+        "definition": "A significant historical TCM formulary text from the Song Dynasty that documents numerous classical prescriptions and their applications."
+    },
+    "僵蚕": {
+        "FET": "HERB",
+        "definition": "Silkworm larvae that have died from fungal infection, used in TCM to clear wind-heat, relieve convulsions, and reduce swelling."
+    },
+    "白鲜皮": {
+        "FET": "HERB",
+        "definition": "The root bark of Dictamnus dasycarpus, used in TCM to clear heat, dry dampness, detoxify, and relieve itching, particularly for skin disorders.  "
+    },
+    "湿热": {
+        "FET": "SYNDROME",
+        "definition": "A TCM syndrome characterized by the combination of heat and dampness pathogens, often manifesting as skin eruptions, jaundice, or urinary issues.  "
+    },
+    "赤小豆": {
+        "FET": "HERB",
+        "definition": "A medicinal bean used in TCM to promote diuresis, reduce swelling, and clear damp-heat, especially in urinary and skin conditions.  "
+    },
+    "土茯苓": {
+        "FET": "HERB",
+        "definition": "The rhizome of Smilax glabra, employed in TCM to remove dampness, clear heat, detoxify, and treat syphilis or skin diseases."
+    },
+    "血虚风燥": {
+        "FET": "SYNDROME",
+        "definition": "A TCM syndrome pattern characterized by blood deficiency leading to dry skin, itching, and wind-related skin disorders."
+    },
+    "《外科正宗》": {
+        "FET": "CLASSICAL_TEXT",
+        "definition": "A classical TCM text focusing on surgical and dermatological conditions, documenting important formulas and treatments."
+    },
+    "地黄": {
+        "FET": "HERB",
+        "definition": "A fundamental TCM herb used to nourish blood, enrich yin, and moisten dryness in blood deficiency patterns."
+    },
+    "当归": {
+        "FET": "HERB",
+        "definition": "A key blood-tonifying herb in TCM that promotes blood circulation and nourishes the blood to treat dryness and itching."
+    },
+    "芒硝": {
+        "FET": "HERB",
+        "definition": "A TCM mineral substance used to purge heat, soften hard masses, and relieve constipation, often combined in formulas for excess heat conditions."
+    },
+    "大黄": {
+        "FET": "HERB",
+        "definition": "A potent purgative herb that clears heat, eliminates toxins, and promotes bowel movement, especially in excess heat patterns."
+    },
+    "里实热结": {
+        "FET": "SYNDROME",
+        "definition": "An interior excess heat syndrome characterized by constipation, abdominal fullness, fever, and possible irritability due to heat accumulation."
+    },
+    "《宣明论方》": {
+        "FET": "CLASSICAL_TEXT",
+        "definition": "A classical TCM text by Liu Wansu that systematically discusses medical theories and formulas, including those for heat-clearing and exterior-releasing."
+    },
+    "防风通圣散": {
+        "FET": "FORMULA",
+        "definition": "A famous formula that simultaneously releases the exterior and clears interior heat, used for conditions with both external wind and internal heat accumulation."
+    },
+    "黄芩": {
+        "FET": "HERB",
+        "definition": "A bitter, cold herb that clears heat, dries dampness, and eliminates toxins, particularly effective for upper burner and lung heat."
+    },
+    "风湿痹痛": {
+        "FET": "DISEASE",
+        "definition": "A type of painful obstruction syndrome in TCM caused by the combined invasion of wind and dampness pathogens, leading to joint pain, stiffness, and limited mobility."
+    },
+    "止痹痛药": {
+        "FET": "HERB_CATEGORY",
+        "definition": "A category of herbs specifically used to alleviate pain associated with bi syndrome (painful obstruction) in TCM."
+    },
+    "祛风湿": {
+        "FET": "THERAPEUTIC_METHOD",
+        "definition": "The therapeutic principle of eliminating wind and dampness pathogens from the body to treat conditions like arthritis and muscular pain."
+    },
+    "祛风散寒": {
+        "FET": "THERAPEUTIC_METHOD",
+        "definition": "A treatment approach that involves expelling wind and cold pathogens from the body to relieve symptoms such as pain, stiffness, and chills."
+    },
+    "辛温": {
+        "FET": "PROPERTY",
+        "definition": "A property description of herbs that are pungent in taste and warm in nature, often used to promote circulation, disperse cold, and relieve pain."
+    },
+    "风寒湿痹": {
+        "FET": "SYNDROME",
+        "definition": "A TCM syndrome characterized by obstruction of wind, cold, and dampness pathogens in the meridians and joints, causing pain, stiffness, and limited movement."
+    },
+    "蠲痹汤": {
+        "FET": "FORMULA",
+        "definition": "A classical TCM formula designed to eliminate bi-syndrome (painful obstruction), composed of herbs that dispel wind, cold, and dampness while promoting circulation."
+    },
+    "肢节疼痛": {
+        "FET": "SYMPTOM",
+        "definition": "Pain in the limbs and joints, typically caused by pathogenic factors obstructing the flow of qi and blood in TCM."
+    },
+    "《医学心悟》": {
+        "FET": "CLASSICAL_TEXT",
+        "definition": "A significant TCM medical text that documents various formulas and treatment principles, including those for bi-syndrome and pain management."
+    },
+    "桂枝": {
+        "FET": "HERB",
+        "definition": "A warming herb in TCM that promotes circulation, dispels cold, and helps to relieve joint pain and stiffness."
+    },
+    "筋脉挛急": {
+        "FET": "SYMPTOM",
+        "definition": "Spasms, cramps, or contractures of muscles and tendons, often resulting from cold or dampness obstruction in TCM."
+    },
+    "破伤风证": {
+        "FET": "DISEASE",
+        "definition": "A pathological condition in TCM characterized by muscle stiffness, spasms, and convulsions due to wind toxin invasion, often from wound infections.  "
+    },
+    "息内风": {
+        "FET": "THERAPEUTIC_ACTION",
+        "definition": "A therapeutic action in TCM referring to calming internal wind, which is responsible for symptoms like tremors, dizziness, and convulsions.  "
+    },
+    "辛散外风": {
+        "FET": "PROPERTY",
+        "definition": "A property of herbs that use pungent dispersion to expel external wind pathogens, alleviating symptoms such as headache, body pain, or superficial conditions.  "
+    },
+    "肌肉痉挛": {
+        "FET": "SYMPTOM",
+        "definition": "Involuntary muscle contractions or spasms, often due to internal wind or pathogenic factors affecting the sinews and channels in TCM."
+    },
+    "内风": {
+        "FET": "SYNDROME",
+        "definition": "Internal wind syndrome in TCM characterized by symptoms like tremors, convulsions, or spasms, usually resulting from liver dysfunction or blood deficiency."
+    },
+    "经络": {
+        "FET": "BODY_STRUCTURE",
+        "definition": "The network of channels and collaterals in TCM through which qi and blood flow, connecting the body's organs and tissues."
+    },
+    "四肢抽搐": {
+        "FET": "SYMPTOM",
+        "definition": "Convulsive movements or spasms in the limbs, typically associated with internal wind or severe pathogenic invasion."
+    },
+    "天麻": {
+        "FET": "HERB",
+        "definition": "A TCM herb used to calm liver wind, relieve spasms, and treat dizziness and convulsive disorders."
+    },
+    "角弓反张": {
+        "FET": "SYMPTOM",
+        "definition": "Opisthotonos - a severe spasm where the body arches backward with head and heels bent backward, often seen in tetanus or extreme wind conditions."
+    },
+    "风毒内侵": {
+        "FET": "PATHOGENIC_PROCESS",
+        "definition": "Pathogenic wind-toxin penetrating deeply into the body, affecting the channels and causing severe symptoms like convulsions."
+    },
+    "项背强急": {
+        "FET": "SYMPTOM",
+        "definition": "Stiffness and rigidity in the neck and back muscles, often preceding more severe convulsive symptoms."
+    },
+    "玉真散": {
+        "FET": "FORMULA",
+        "definition": "A classical TCM formula specifically designed to treat tetanus and wind-induced convulsions by dispelling wind and relieving spasms."
+    },
+    "天南星": {
+        "FET": "HERB",
+        "definition": "A potent herb used to resolve phlegm, dispel wind, and relieve convulsions, particularly in severe wind patterns."
+    },
+    "白附子": {
+        "FET": "HERB",
+        "definition": "A toxic herb processed for medicinal use to dispel wind, resolve phlegm, and stop convulsions in wind-cold conditions."
+    },
+    "祛风止痉药": {
+        "FET": "HERB_CATEGORY",
+        "definition": "A category of herbs that dispel wind pathogens and relieve muscle spasms or convulsions, used in various wind-related disorders."
+    },
+    "人参": {
+        "FET": "HERB",
+        "definition": "A fundamental tonic herb in TCM used to greatly supplement qi, strengthen the spleen, and improve overall vitality and digestive function."
+    },
+    "泄泻": {
+        "FET": "SYMPTOM",
+        "definition": "A condition characterized by loose or watery stools, often resulting from spleen deficiency, dampness accumulation, or yang qi failure to ascend."
+    },
+    "升清燥湿": {
+        "FET": "THERAPEUTIC_METHOD",
+        "definition": "A therapeutic principle involving raising clear yang qi while drying dampness, particularly useful for spleen deficiency with dampness causing diarrhea."
+    },
+    "脾虚湿盛": {
+        "FET": "SYNDROME",
+        "definition": "A TCM pattern where spleen deficiency leads to impaired transportation, resulting in dampness accumulation and digestive disturbances."
+    },
+    "《脾胃论》": {
+        "FET": "CLASSICAL_TEXT",
+        "definition": "A classical TCM text by Li Dongyuan focusing on spleen and stomach disorders, emphasizing the importance of middle jiao health."
+    },
+    "清阳不升": {
+        "FET": "SYNDROME",
+        "definition": "A pathological state where clear yang qi fails to ascend properly, leading to symptoms like diarrhea, dizziness, and poor digestion."
+    },
+    "升阳益胃汤": {
+        "FET": "FORMULA",
+        "definition": "A classical formula designed to raise yang qi and benefit the stomach, specifically addressing spleen deficiency with dampness and yang qi sinking."
+    },
+    "土虚木乘": {
+        "FET": "SYNDROME",
+        "definition": "A TCM pattern where spleen deficiency (earth element weakness) allows liver overactivity (wood element) to dominate, leading to digestive disturbances and pain."
+    },
+    "痛泻要方": {
+        "FET": "FORMULA",
+        "definition": "A classic TCM formula specifically designed to treat painful diarrhea caused by liver-spleen disharmony and liver qi stagnation attacking the spleen."
+    },
+    "白芍": {
+        "FET": "HERB",
+        "definition": "A key herb that nourishes blood, softens the liver, relieves pain, and helps regulate liver qi to prevent it from overacting on the spleen."
+    },
+    "《景岳全书》": {
+        "FET": "CLASSICAL_TEXT",
+        "definition": "A comprehensive Ming Dynasty medical text by Zhang Jiebin that systematically documents TCM theories, formulas, and clinical experiences."
+    },
+    "腹泻而痛": {
+        "FET": "SYMPTOM",
+        "definition": "A symptom complex characterized by abdominal pain accompanied by diarrhea, typically indicating liver-spleen disharmony in TCM."
+    },
+    "肝郁侮脾": {
+        "FET": "SYNDROME",
+        "definition": "A pathological state where liver qi stagnation and emotional constraint directly impair spleen function, causing digestive symptoms."
+    },
+    "刘草窗方": {
+        "FET": "FORMULA",
+        "definition": "A formula attributed to Liu Caochuang, a Ming Dynasty physician known for his contributions to treating digestive disorders through liver-spleen regulation."
+    },
+    "陈皮": {
+        "FET": "HERB",
+        "definition": "An herb that regulates qi, resolves dampness, harmonizes the middle jiao, and assists spleen function in digestive formulas."
+    },
+    "肝脾不和": {
+        "FET": "SYNDROME",
+        "definition": "A fundamental TCM pattern describing the disharmony between liver's governing of free flow and spleen's governing of transformation and transportation."
+    },
+    "煎服": {
+        "FET": "PREPARATION_METHOD",
+        "definition": "A method of preparing herbal medicine by boiling in water to extract active compounds, commonly used in TCM for oral administration."
+    },
+    "4.5～9g": {
+        "FET": "DOSAGE",
+        "definition": "The typical dosage range for this herb when prepared as a decoction, indicating the amount of dried material used per daily dose in TCM practice."
+    },
+    "热病动风": {
+        "FET": "SYNDROME",
+        "definition": "A pathological condition in TCM where febrile diseases lead to internal wind symptoms such as convulsions, tremors, or spasms due to heat affecting the liver."
+    },
+    "阴血亏虚": {
+        "FET": "SYNDROME",
+        "definition": "A deficiency state in TCM characterized by insufficient yin and blood, often presenting with dryness, heat sensations, night sweats, and general debility."
+    },
+    "药性偏温": {
+        "FET": "PROPERTY",
+        "definition": "Refers to medicinal substances that have a warming nature, which may exacerbate heat conditions or consume yin and body fluids if used inappropriately."
+    },
+    "风寒感冒": {
+        "FET": "DISEASE",
+        "definition": "Common cold caused by wind-cold pathogens, presenting with chills, mild fever, headache, and absence of sweating."
+    },
+    "风热感冒": {
+        "FET": "DISEASE",
+        "definition": "Common cold caused by wind-heat pathogens, characterized by fever, slight chills, sore throat, and headache."
+    },
+    "性微温": {
+        "FET": "PROPERTY",
+        "definition": "Slightly warm nature in TCM herb properties, which helps to disperse cold without causing excessive dryness."
+    },
+    "发热": {
+        "FET": "SYMPTOM",
+        "definition": "Fever, a sign of the body's defensive qi fighting against pathogenic factors in exterior syndromes."
+    },
+    "温而不燥": {
+        "FET": "PROPERTY",
+        "definition": "A property of herbs that are warm but not drying, making them suitable for longer-term use without damaging body fluids."
+    },
+    "咽痛": {
+        "FET": "SYMPTOM",
+        "definition": "Sore throat, commonly associated with wind-heat patterns where heat affects the throat area."
+    },
+    "头痛无汗": {
+        "FET": "SYMPTOM",
+        "definition": "Headache without sweating, typically indicating a wind-cold exterior pattern where pores are closed."
+    },
+    "味辛": {
+        "FET": "PROPERTY",
+        "definition": "Pungent taste in TCM, which has dispersing and moving properties to promote circulation and release exterior conditions."
+    },
+    "恶寒发热": {
+        "FET": "SYMPTOM",
+        "definition": "Symptoms of alternating chills and fever, typically indicating an exterior syndrome where the body is fighting external pathogens."
+    },
+    "微恶风寒": {
+        "FET": "SYMPTOM",
+        "definition": "Slight aversion to wind and cold, often seen in wind-heat exterior patterns where the body has some resistance to cold."
+    },
+    "发表散风": {
+        "FET": "THERAPEUTIC_METHOD",
+        "definition": "The therapeutic action of releasing the exterior and dispersing wind pathogens from the body surface."
+    },
+    "头痛": {
+        "FET": "SYMPTOM",
+        "definition": "Headache, a common symptom in exterior syndromes caused by various pathogenic factors affecting the head."
+    },
+    "发汗": {
+        "FET": "THERAPEUTIC_METHOD",
+        "definition": "A therapeutic method in TCM that promotes sweating to release exterior pathogens, especially wind-cold or wind-heat."
+    },
+    "止血": {
+        "FET": "THERAPEUTIC_ACTION",
+        "definition": "The therapeutic action of stopping bleeding, whether internal or external, through various mechanisms like astringency or cooling heat."
+    },
+    "透疹": {
+        "FET": "THERAPEUTIC_ACTION",
+        "definition": "A treatment principle in TCM that facilitates the complete eruption of rashes to expel pathogenic factors from the body."
+    },
+    "消疮": {
+        "FET": "THERAPEUTIC_ACTION",
+        "definition": "The action of reducing or eliminating sores, ulcers, or skin lesions by clearing heat, toxins, or promoting healing."
+    },
+    "治风之通用药": {
+        "FET": "HERB_CATEGORY",
+        "definition": "A versatile herb that can treat various wind-related disorders, whether external or internal, deficient or excess patterns."
+    },
+    "风药之润剂": {
+        "FET": "HERB_CATEGORY",
+        "definition": "A category of wind-dispelling herbs that are moistening in nature, preventing the drying side effects often associated with wind-dispelling medications."
+    },
+    "质松而润": {
+        "FET": "HERB_PROPERTY",
+        "definition": "A physical property describing herbs that are light, porous, and moistening, making them suitable for prolonged use without causing dryness."
+    },
+    "《神农本草经》": {
+        "FET": "CLASSICAL_TEXT",
+        "definition": "The earliest extant pharmacopoeia in China, compiled during the Han Dynasty, which systematically documents medicinal substances and their therapeutic properties."
+    },
+    "烦满": {
+        "FET": "SYMPTOM",
+        "definition": "A TCM symptom characterized by restlessness and a feeling of fullness or oppression in the chest and abdomen."
+    },
+    "恶风": {
+        "FET": "SYMPTOM",
+        "definition": "A condition where the patient experiences aversion to wind, often associated with exterior wind-cold or wind-heat patterns."
+    },
+    "风行周身": {
+        "FET": "PATHOGEN_MANIFESTATION",
+        "definition": "Pathogenic wind moving throughout the body, causing various symptoms in different areas."
+    },
+    "大风头眩痛": {
+        "FET": "SYMPTOM",
+        "definition": "Severe dizziness and headache caused by pathogenic wind attacking the head region."
+    },
+    "目盲无所见": {
+        "FET": "SYMPTOM",
+        "definition": "Visual impairment or blindness where the patient cannot see clearly, often associated with wind attacking the eyes."
+    },
+    "骨节疼痹": {
+        "FET": "SYMPTOM",
+        "definition": "Pain and obstruction in the joints and bones, typically caused by wind, cold, or damp pathogens."
+    },
+    "金疮内痉": {
+        "FET": "DISEASE",
+        "definition": "A condition in TCM referring to muscle spasms or tetanus-like symptoms following traumatic injuries or wounds, often involving internal wind and toxin accumulation."
+    },
+    "胁痛": {
+        "FET": "SYMPTOM",
+        "definition": "Pain in the hypochondriac region (sides of the body below the ribs), commonly associated with liver and gallbladder disorders in TCM."
+    },
+    "字乳": {
+        "FET": "SYMPTOM",
+        "definition": "A historical TCM term possibly referring to lactation-related issues or breast conditions, though its exact meaning may vary in classical contexts."
+    },
+    "胁风头面去来": {
+        "FET": "SYNDROME",
+        "definition": "A pattern describing migratory pain or discomfort moving between the hypochondriac region, head, and face, often related to wind pathogen movement."
+    },
+    "《名医别录》": {
+        "FET": "CLASSICAL_TEXT",
+        "definition": "An important classical Chinese medical text that supplements the Shennong Bencao Jing, containing additional medicinal knowledge from famous physicians."
+    },
+    "四肢挛急": {
+        "FET": "SYMPTOM",
+        "definition": "Involuntary muscle contractions or spasms in the four limbs, typically caused by wind, cold, or blood deficiency patterns in TCM."
+    },
+    "有机酸": {
+        "FET": "CHEMICAL_COMPONENT",
+        "definition": "A class of organic compounds with acidic properties, commonly found in medicinal plants and known for their roles in metabolism, antimicrobial activity, and potential therapeutic effects in TCM formulations."
+    },
+    "苦味苷": {
+        "FET": "CHEMICAL_COMPONENT",
+        "definition": "Bitter-tasting glycosides present in many herbs, often associated with stimulating digestion, clearing heat, and possessing detoxifying properties in TCM."
+    },
+    "甘露醇": {
+        "FET": "CHEMICAL_COMPONENT",
+        "definition": "A naturally occurring sugar alcohol with osmotic diuretic properties, used in TCM to reduce edema, clear heat, and promote urination."
+    },
+    "挥发油": {
+        "FET": "CHEMICAL_COMPONENT",
+        "definition": "Volatile oils found in aromatic plants, responsible for many therapeutic effects including promoting circulation, relieving pain, and having antimicrobial properties in TCM."
+    },
+    "酚类": {
+        "FET": "CHEMICAL_COMPONENT",
+        "definition": "Phenolic compounds with antioxidant and anti-inflammatory properties, commonly found in medicinal plants and contributing to their therapeutic effects in TCM formulations."
+    },
+    "β-谷甾醇": {
+        "FET": "CHEMICAL_COMPONENT",
+        "definition": "A plant sterol with anti-inflammatory and cholesterol-lowering properties, often found in medicinal herbs and valued in TCM for its beneficial effects on lipid metabolism."
+    },
+    "多糖类": {
+        "FET": "CHEMICAL_COMPONENT",
+        "definition": "Complex carbohydrates consisting of long chains of sugar molecules, known for their immunomodulatory, antioxidant, and energy-boosting properties in TCM herbal medicine."
+    },
+    "镇静": {
+        "FET": "PHARMACOLOGICAL_EFFECT",
+        "definition": "A pharmacological effect referring to the ability to calm the central nervous system, reduce anxiety, and promote relaxation."
+    },
+    "抗过敏作用": {
+        "FET": "PHARMACOLOGICAL_EFFECT",
+        "definition": "The property of inhibiting allergic reactions, reducing hypersensitivity responses, and modulating immune system activity."
+    },
+    "抗炎": {
+        "FET": "PHARMACOLOGICAL_EFFECT",
+        "definition": "The ability to reduce inflammation, decrease swelling, and inhibit inflammatory mediators in the body."
+    },
+    "抗惊厥": {
+        "FET": "PHARMACOLOGICAL_EFFECT",
+        "definition": "A pharmacological effect that prevents or reduces seizures and convulsions by stabilizing neuronal activity."
+    },
+    "镇痛": {
+        "FET": "PHARMACOLOGICAL_EFFECT",
+        "definition": "The property of relieving pain through various mechanisms, including modulation of pain pathways and reduction of inflammatory mediators."
+    },
+    "解热": {
+        "FET": "PHARMACOLOGICAL_EFFECT",
+        "definition": "The ability to reduce fever by acting on the thermoregulatory center in the hypothalamus and inhibiting pyrogenic substances."
+    },
+    "绿脓杆菌": {
+        "FET": "BACTERIA",
+        "definition": "Pseudomonas aeruginosa, a Gram-negative bacterium known for causing infections in immunocompromised individuals and showing resistance to many antibiotics."
+    },
+    "抑制作用": {
+        "FET": "PHARMACOLOGICAL_ACTION",
+        "definition": "The capacity to reduce, prevent, or slow down biological processes, particularly microbial growth or enzymatic activities."
+    },
+    "小鼠腹腔巨噬细胞吞噬功能": {
+        "FET": "IMMUNE_FUNCTION",
+        "definition": "The phagocytic activity of peritoneal macrophages in mice, representing an important measure of innate immune response and host defense mechanisms."
+    },
+    "抗菌作用": {
+        "FET": "PHARMACOLOGICAL_ACTION",
+        "definition": "The ability of a substance to inhibit or kill microorganisms, particularly bacteria, through various mechanisms."
+    },
+    "溶血性链球菌": {
+        "FET": "BACTERIA",
+        "definition": "Hemolytic streptococci, particularly Streptococcus pyogenes, known for causing pharyngitis, skin infections, and post-infectious complications like rheumatic fever."
+    },
+    "金黄色葡萄球菌": {
+        "FET": "BACTERIA",
+        "definition": "Staphylococcus aureus, a Gram-positive bacterium responsible for various infections including skin infections, pneumonia, and food poisoning."
+    },
+    "痢疾杆菌": {
+        "FET": "BACTERIA",
+        "definition": "Shigella species, bacteria that cause dysentery and gastrointestinal infections through fecal-oral transmission."
+    }
+}
