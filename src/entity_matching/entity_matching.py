@@ -9,6 +9,7 @@ import logging
 from podbug.debug import Result_T, try_result
 # from pydantic import BaseModel, Field
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from sentence_transformers import SentenceTransformer
 
 # class EntityMatchingInput(BaseModel):
 #     entity: str
@@ -75,6 +76,8 @@ class BaseStemer:
 
         self.parse_pattern = re.compile(r'```answer\s*(.*?)\s*```', re.DOTALL)
         self.api_call = 0
+
+        self.model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
 
     def add(self, word, FET, definition):
         if self.is_contained(word):
@@ -219,45 +222,73 @@ class Stemer(BaseStemer):
         super().__init__(model)
     
     def _entity_matching(self, first_entity, second_entity):
-        first_definition = self.word_definition_dict[first_entity]
-        second_definition = self.word_definition_dict[second_entity]
+        pass
+        # first_definition = self.word_definition_dict[first_entity]
+        # second_definition = self.word_definition_dict[second_entity]
 
-        filled_prompt = PROMPT.format_map({
-            'entity1': first_entity,
-            'definition1': first_definition,
-            'entity2': second_entity,
-            'definition2': second_definition
-        })
+        # filled_prompt = PROMPT.format_map({
+        #     'entity1': first_entity,
+        #     'definition1': first_definition,
+        #     'entity2': second_entity,
+        #     'definition2': second_definition
+        # })
 
-        completion = str(llm_utils.fast_openai_chat_completion('deepseek-chat', filled_prompt))
-        answer = str(self._parse_answer(completion))
+        # completion = str(llm_utils.fast_openai_chat_completion('deepseek-chat', filled_prompt))
+        # answer = str(self._parse_answer(completion))
 
-        if not answer:
-            logger.error(f'cannot parse {completion}')
-            return False
+        # if not answer:
+        #     logger.error(f'cannot parse {completion}')
+        #     return False
         
-        return answer.upper() == "YES"
+        # return answer.upper() == "YES"
+        # 
+    def matching(self, similarity):
+        threshold = 0.7
+        length = len(similarity)
+        result = []
+
+        for i in range(0, length - 1, ):
+            for j in range(i + 1, length):
+                score = similarity[i][j]
+
+                if score >= threshold:
+                    result.append((i, j))
+
+        return result
     
     def _link_to_most_similar(self, word_definition_list):
-        length = len(word_definition_list)
-        total_len = int(((length - 1) * length) / 2)
+        input_def = [word_definition_tuple[1] for word_definition_tuple in word_definition_list]
 
-        with tqdm(total=total_len) as pbar:
-            for i in range(0, length - 1):
-                for j in range(i + 1, length):
-                    va = word_definition_list[i][0]
-                    vb = word_definition_list[j][0]
+        embeddings = self.model.encode(input_def)
 
-                    if (not self._matched(va, vb)) and self._entity_matching(va, vb):
-                        self._merge(va, vb)
+        similarities = self.model.similarity(embeddings, embeddings)
+        matched = self.matching(similarities)
 
-                    pbar.update()
+        return matched
+        
+        # length = len(word_definition_list)
+
+        # total_len = int(((length - 1) * length) / 2)
+
+        # with tqdm(total=total_len) as pbar:
+        #     for i in range(0, length - 1):
+        #         for j in range(i + 1, length):
+        #             va = word_definition_list[i][0]
+        #             vb = word_definition_list[j][0]
+
+        #             if (not self._matched(va, vb)) and self._entity_matching(va, vb):
+        #                 self._merge(va, vb)
+
+        #             pbar.update()
 
     def build(self):
         self._build()
 
         for word_definition_list in self.FET_data_dict.values():
-            self._link_to_most_similar(word_definition_list)
+            result = self._link_to_most_similar(word_definition_list)
+
+            for result_tuple in result:
+                print(f'{word_definition_list[result_tuple[0]][0]} <-> {word_definition_list[result_tuple[1]][0]}')
 
 class AStemer(BaseStemer):
     def __init__(self, model=None):
@@ -361,36 +392,36 @@ if __name__ == "__main__":
     #     EntityMatchingInput(entity='澳門', definition='Refers to Macao, the Special Administrative Region of China and former Portuguese colony. A beautiful place', metadata={'FET': 'location'})
     # ]
 
-    async def async_main():
-        ds = AStemer()
-
-        ds.add_dict(data_dict)
-
-        await ds.abuild()
-
-        logger.info('standard representation of: ')
-        for word in data_dict.keys():
-            logger.info(f'{word} -> {ds.stem(word)}')
-
-        logger.info(ds.to_dict())
-
-        ds.save(Path('ds_state.json'))
-    
-    # def main():
-    #     ds = Stemer()
+    # async def async_main():
+    #     ds = AStemer()
 
     #     ds.add_dict(data_dict)
 
-    #     ds.build()
+    #     await ds.abuild()
 
     #     logger.info('standard representation of: ')
+    #     for word in data_dict.keys():
+    #         logger.info(f'{word} -> {ds.stem(word)}')
+
     #     logger.info(ds.to_dict())
 
     #     ds.save(Path('ds_state.json'))
+    
+    def main():
+        ds = Stemer()
 
-    # main()
+        ds.add_dict(data_dict)
 
-    asyncio.run(async_main())
+        ds.build()
+
+        logger.info('standard representation of: ')
+        logger.info(ds.to_dict())
+
+        ds.save(Path('ds_state.json'))
+
+    main()
+
+    # asyncio.run(async_main())
     # ds = AStemer()
     # ds.restore(Path('ds_state.json'))
 
