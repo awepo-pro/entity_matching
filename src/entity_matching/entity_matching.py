@@ -7,6 +7,12 @@ import re
 import asyncio
 import logging
 from podbug.debug import Result_T, try_result
+from pydantic import BaseModel, Field
+
+# class EntityMatchingInput(BaseModel):
+#     entity: str
+#     definition: str
+#     metadata: dict = Field(default={}, description='the more metadata, the faster speed')
 
 logger = logging.getLogger(__name__)
 
@@ -62,19 +68,30 @@ class BaseStemer:
         self.word_definition_dict = {}
         self.api_model = model or 'deepseek-chat'
 
+        self.FET_data_dict = {}
+        self.word_FET_dict = {}
+
         self.parse_pattern = re.compile(r'```answer\s*(.*?)\s*```', re.DOTALL)
 
-    def add(self, word, definition):
+    def add(self, word, FET, definition):
         if self.is_contained(word):
             return Result_T.error('word already exists')
 
         self.word_index_dict[word] = self.word_cnt
         self.word_definition_dict[word] = definition
+        self.word_FET_dict[word] = FET
+        if FET not in self.FET_data_dict:
+            self.FET_data_dict[FET] = []
+
+        self.FET_data_dict[FET].append((word, definition))
         self.word_cnt += 1
+
         return Result_T.ok(self.word_index_dict[word])
     
     def add_dict(self, data_dict: dict):
-        return [self.add(word, definition) for word, definition in data_dict.items()]
+        # if isinstance(data_dict, dict):
+        #     data_dict = self.convert_into_input_T(data_dict)
+        return [self.add(word, FET, definition) for word, (FET, definition) in data_dict.items()]
     
     def _matched(self, va, vb):
         return self.find(va).unwrap() != va or self.find(vb).unwrap() != vb
@@ -85,7 +102,6 @@ class BaseStemer:
             return None
 
         result = answer.group(1).strip('\n')
-        logger.info(result)
 
         return result
 
@@ -195,6 +211,7 @@ class BaseStemer:
             self.word_definition_dict[entity] = definition
 
 
+
 class Stemer(BaseStemer):
     def __init__(self, model=None):
         super().__init__(model)
@@ -219,15 +236,16 @@ class Stemer(BaseStemer):
         
         return answer.upper() == "YES"
     
-    def _link_to_most_similar(self):
-        length = len(self.word_definition_dict)
+    def _link_to_most_similar(self, word_definition_list):
+        print(f'linking: {word_definition_list}')
+        length = len(word_definition_list)
         total_len = int(((length - 1) * length) / 2)
 
         with tqdm(total=total_len) as pbar:
             for i in range(0, length - 1):
                 for j in range(i + 1, length):
-                    va = self.index_word_dict[i + 1]
-                    vb = self.index_word_dict[j + 1]
+                    va = word_definition_list[i][0]
+                    vb = word_definition_list[j][0]
 
                     if (not self._matched(va, vb)) and self._entity_matching(va, vb):
                         self._merge(va, vb)
@@ -236,7 +254,9 @@ class Stemer(BaseStemer):
 
     def build(self):
         self._build()
-        self._link_to_most_similar()
+
+        for word_definition_list in self.FET_data_dict.values():
+            self._link_to_most_similar(word_definition_list)
 
 
 class AStemer(BaseStemer):
@@ -257,24 +277,23 @@ class AStemer(BaseStemer):
         completion = await llm_utils.openai_chat_completion(self.api_model, filled_prompt)
         answer = str(self._parse_answer(str(completion)))
 
-        logger.info(f'{first_entity} and {second_entity} -> {answer}')
-
         if not answer:
             logger.info(f'cannot parse {completion}')
             return False, first_entity, second_entity
         
         return answer.upper() == "YES", first_entity, second_entity
     
-    async def _async_link_to_most_similar(self):
-        length = len(self.word_definition_dict)
+    async def _async_link_to_most_similar(self, word_definition_list):
+        print(word_definition_list)
+        length = len(word_definition_list)
 
         # Create all tasks for concurrent execution
         for i in range(0, length - 1):
             tasks = []
 
             for j in range(i + 1, length):
-                va = self.index_word_dict[i + 1]
-                vb = self.index_word_dict[j + 1]
+                va = word_definition_list[i][0]
+                vb = word_definition_list[j][0]
 
                 if not self._matched(va, vb):
                     tasks.append(self._async_entity_matching(va, vb))
@@ -290,7 +309,12 @@ class AStemer(BaseStemer):
         self.fa = list(range(n))  # equivalent to std::iota
         self.index_word_dict = {val: key for key, val in self.word_index_dict.items()}
 
-        await self._async_link_to_most_similar()
+        tasks = [
+            self._async_link_to_most_similar(word_definition_list)
+            for word_definition_list in self.FET_data_dict.values()
+        ]
+
+        await async_tqdm.gather(*tasks, desc='processing blocking')
 
 
 if __name__ == "__main__":
@@ -304,37 +328,37 @@ if __name__ == "__main__":
         datefmt="%m/%d/%Y %H:%M:%S",
     )
 
-    # async def async_main():
-    #     ds = AStemer(Path('word_definition.jsonl'))
+    data_dict = {
+        '澳門': {'FET': 'location', 'definition': 'Refers to Macao, the Special Administrative Region of China and former Portuguese colony. A beautiful place'},
+        '濠鏡澳': {'FET': 'location', 'defintion': 'An ancient Chinese name for Macao, literally meaning "Oyster Mirror Bay," referring to the area\'s geographic features before it became known as Macao.'},
+        '香港': {'FET': 'location', 'definition': 'refers to Hong Kong, the Special Administrative Region of China and former British colony.'},
+        'hk': {'FET': 'location', 'definition': 'refers to HK'},
+        '鏡海': {'FET': 'location', 'definition': 'refers to an ancient poetic name for the waters around Macao, literally meaning "Mirror Sea.'},
+        'pencil': {'FET': 'tool', 'definition': 'refer to a pen'},
+        'pen': {'FET': 'tool', 'definition': 'refer to a pen'}
+    }
 
-    #     data_dict = {
-    #         '澳門': 'Refers to Macao, the Special Administrative Region of China and former Portuguese colony. A beautiful place',
-    #         '濠鏡澳': 'An ancient Chinese name for Macao, literally meaning "Oyster Mirror Bay," referring to the area\'s geographic features before it became known as Macao.',
-    #         '香港': 'refers to Hong Kong, the Special Administrative Region of China and former British colony.',
-    #         '鏡海': 'refers to an ancient poetic name for the waters around Macao, literally meaning "Mirror Sea.'
-    #     }
+    # data_dict: list[EntityMatchingInput] = [
+    #     EntityMatchingInput(entity='澳門', definition='Refers to Macao, the Special Administrative Region of China and former Portuguese colony. A beautiful place', metadata={'FET': 'location'})
+    # ]
 
-    #     ds.add_dict(data_dict)
+    async def async_main():
+        ds = AStemer()
 
-    #     await ds.abuild()
+        ds.add_dict(data_dict)
 
-    #     logger.info('standard representation of: ')
-    #     for word in data_dict.keys():
-    #         logger.info(f'{word} -> {ds.stem(word)}')
+        await ds.abuild()
 
-    #     logger.info(ds.to_dict())
+        logger.info('standard representation of: ')
+        for word in data_dict.keys():
+            logger.info(f'{word} -> {ds.stem(word)}')
 
-    #     ds.save(Path('ds_state.json'))
+        logger.info(ds.to_dict())
+
+        ds.save(Path('ds_state.json'))
     
     # def main():
-    #     ds = Stemer(Path('word_definition.jsonl'))
-
-    #     data_dict = {
-    #         '澳門': 'Refers to Macao, the Special Administrative Region of China and former Portuguese colony. A beautiful place',
-    #         '濠鏡澳': 'An ancient Chinese name for Macao, literally meaning "Oyster Mirror Bay," referring to the area\'s geographic features before it became known as Macao.',
-    #         '香港': 'refers to Hong Kong, the Special Administrative Region of China and former British colony.',
-    #         '鏡海': 'refers to an ancient poetic name for the waters around Macao, literally meaning "Mirror Sea.'
-    #     }
+    #     ds = Stemer()
 
     #     ds.add_dict(data_dict)
 
@@ -343,10 +367,12 @@ if __name__ == "__main__":
     #     logger.info('standard representation of: ')
     #     logger.info(ds.to_dict())
 
-    # asyncio.run(async_main())
+    #     ds.save(Path('ds_state.json'))
+
     # main()
 
-    ds = AStemer()
-    ds.restore(Path('ds_state.json'))
+    asyncio.run(async_main())
+    # ds = AStemer()
+    # ds.restore(Path('ds_state.json'))
 
-    print(ds.stem('香港'))
+    # print(ds.stem('香港'))
