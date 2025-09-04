@@ -8,6 +8,7 @@ import asyncio
 import logging
 from podbug.debug import Result_T, try_result
 from pydantic import BaseModel, Field
+import ast
 
 # class EntityMatchingInput(BaseModel):
 #     entity: str
@@ -17,45 +18,46 @@ from pydantic import BaseModel, Field
 logger = logging.getLogger(__name__)
 
 PROMPT = """ \
-There are 2 entities and their defintions, are they refer to the same thing in reality? There are some examples, 
+There are 1 main entity with defintion and several entity candidates' definition. You task is to identify are any of entity candidates refer to the same thing as main entity in reality? There are some examples, 
+
 Example 1
 << Input >>
-entity 1: 澳門, is the modern Chinese name for Macau, referring to the Special Administrative Region of China.
-entity 2: 濠鏡澳, is an old historical name for Macau, used during the Ming and Qing dynasties.
+main entity: 澳門, is the modern Chinese name for Macau, referring to the Special Administrative Region of China.
+
+candidate entity's definitions: 
+1. is an old historical name for Macau, used during the Ming and Qing dynasties.
+2. refers to Hong Kong, the Special Administrative Region of China and former British colony.
+3. refers to HK
+4. refers to an ancient poetic name for the waters around Macao, literally meaning "Mirror Sea.
 
 << Output >>
-Both terms refer to the same geographic location—the peninsula and islands we know today as Macau.
+Looking at this example, I need to identify which candidate entities refer to the same real-world place as the main entity "澳門" (Macau).
 
-The difference is purely historical and stylistic: 澳門 (Àomén) is the modern, official name, while 濠鏡澳 (Háojìng'ào) is an ancient, literary name that is rarely used in everyday modern contexts.
+**Analysis:**
+
+Main entity: 澳門 - Modern Chinese name for Macau SAR, China
+
+Candidate entities:
+1. **Refers to the same entity** - This is an old historical name for Macau from the Ming and Qing dynasties. Despite being a different historical name, it refers to the same geographical location and political entity as modern 澳門.
+
+2. **Does not refer to the same entity** - This refers to Hong Kong, which is a completely different Special Administrative Region of China, separate from Macau.
+
+3. **Does not refer to the same entity** - This refers to HK (Hong Kong), same as candidate 2.
+
+4. **Refers to the same entity** - This is an ancient poetic name for the waters around Macao. While it's a poetic/literary reference to the waters rather than the land territory itself, it refers to the same geographical area as 澳門.
 
 ```answer
 YES
-```
-
-Example 2
-<< Input >>
-entity 1: 澳門, is the modern Chinese name for Macau, referring to the Special Administrative Region of China.
-entity 2: 香港, refers to Hong Kong, the Special Administrative Region of China and former British colony.
-
-<< Output >>
-These are two completely different geographic locations and political entities. While both are Special Administrative Regions of China with similar political status, they are:
-
-Different territories with distinct boundaries
-Different historical backgrounds (Portuguese vs British colonial heritage)
-Different locations (Macau is west of the Pearl River Delta, Hong Kong is to the east)
-Different cultures, languages, and administrative systems
-Different economies and legal frameworks
-
-```answer
-NO
+1
+4
 ```
 
 You might explain why you choose the answer as long as the explanation helps you to make better decision. Now, consider the following input,
 << Input >>
-entity 1: {entity1}, {definition1}
-entity 2: {entity2}, {definition2}
+main_entity: {main_entity}, {main_definition}
 
-<< Output >>
+candidate entity's definitions: 
+{candidates}
 
 """
 
@@ -72,6 +74,7 @@ class BaseStemer:
         self.word_FET_dict = {}
 
         self.parse_pattern = re.compile(r'```answer\s*(.*?)\s*```', re.DOTALL)
+        self.api_call = 0
 
     def add(self, word, FET, definition):
         if self.is_contained(word):
@@ -89,9 +92,7 @@ class BaseStemer:
         return Result_T.ok(self.word_index_dict[word])
     
     def add_dict(self, data_dict: dict):
-        # if isinstance(data_dict, dict):
-        #     data_dict = self.convert_into_input_T(data_dict)
-        return [self.add(word, FET, definition) for word, (FET, definition) in data_dict.items()]
+        return [self.add(word, v.get('FET', ''), v.get('definition', '')) for word, v in data_dict.items()]
     
     def _matched(self, va, vb):
         return self.find(va).unwrap() != va or self.find(vb).unwrap() != vb
@@ -99,11 +100,12 @@ class BaseStemer:
     def _parse_answer(self, completion: str):
         answer = self.parse_pattern.search(completion)
         if not answer:
-            return None
+            return None, None
 
-        result = answer.group(1).strip('\n')
+        result = answer.group(1).strip().split('\n')
+        found, candidates = str(result[0]), list(result[1:])
 
-        return result
+        return found, candidates
 
     def _build(self):
         n = self.word_cnt
@@ -237,7 +239,6 @@ class Stemer(BaseStemer):
         return answer.upper() == "YES"
     
     def _link_to_most_similar(self, word_definition_list):
-        print(f'linking: {word_definition_list}')
         length = len(word_definition_list)
         total_len = int(((length - 1) * length) / 2)
 
@@ -258,51 +259,61 @@ class Stemer(BaseStemer):
         for word_definition_list in self.FET_data_dict.values():
             self._link_to_most_similar(word_definition_list)
 
-
 class AStemer(BaseStemer):
     def __init__(self, model=None):
         super().__init__(model)
     
-    async def _async_entity_matching(self, first_entity, second_entity):
-        first_definition = self.word_definition_dict[first_entity]
-        second_definition = self.word_definition_dict[second_entity]
+    async def _async_entity_matching(self, main_entity, candidates):
+        global cnt
+        main_definition = self.word_definition_dict[main_entity]
+        candidate_definition_list = [self.word_definition_dict[candidate] for candidate in candidates]
+
+        candidates_str = '\n'.join(f'{idx}. {definition}' for idx, definition in enumerate(candidate_definition_list))
 
         filled_prompt = PROMPT.format_map({
-            'entity1': first_entity,
-            'definition1': first_definition,
-            'entity2': second_entity,
-            'definition2': second_definition
+            'main_entity': main_entity,
+            'main_definition': main_definition,
+            'candidates': candidates_str
         })
 
+        self.api_call += 1
         completion = await llm_utils.openai_chat_completion(self.api_model, filled_prompt)
-        answer = str(self._parse_answer(str(completion)))
+        found, answer = self._parse_answer(str(completion))
 
-        if not answer:
+        if not found:
             logger.info(f'cannot parse {completion}')
-            return False, first_entity, second_entity
+            return False, main_definition, answer
         
-        return answer.upper() == "YES", first_entity, second_entity
+        return found.upper() == "YES", main_entity, [candidates[int(i)] for i in answer] if answer else []
     
     async def _async_link_to_most_similar(self, word_definition_list):
-        print(word_definition_list)
         length = len(word_definition_list)
 
         # Create all tasks for concurrent execution
         for i in range(0, length - 1):
             tasks = []
+            candidate_list = []
+            va = word_definition_list[i][0]
 
             for j in range(i + 1, length):
-                va = word_definition_list[i][0]
                 vb = word_definition_list[j][0]
+                print(va, vb)
 
                 if not self._matched(va, vb):
-                    tasks.append(self._async_entity_matching(va, vb))
+                    candidate_list.append(vb)
+
+            for i in range(0, len(candidate_list), 5):
+                start = i
+                end = i + 5
+                candidate = candidate_list[start:end]
+                tasks.append(self._async_entity_matching(va, candidate))
 
             # Execute all tasks concurrently with progress tracking
             for coro in async_tqdm.as_completed(tasks, desc="Processing entity pairs"):
                 should_match, entity_a, entity_b = await coro
                 if should_match:
-                    self._merge(entity_a, entity_b)
+                    for eb in entity_b:
+                        self._merge(entity_a, eb)
 
     async def abuild(self):
         n = self.word_cnt
@@ -330,7 +341,7 @@ if __name__ == "__main__":
 
     data_dict = {
         '澳門': {'FET': 'location', 'definition': 'Refers to Macao, the Special Administrative Region of China and former Portuguese colony. A beautiful place'},
-        '濠鏡澳': {'FET': 'location', 'defintion': 'An ancient Chinese name for Macao, literally meaning "Oyster Mirror Bay," referring to the area\'s geographic features before it became known as Macao.'},
+        '濠鏡澳': {'FET': 'location', 'definition': 'An ancient Chinese name for Macao, literally meaning "Oyster Mirror Bay," referring to the area\'s geographic features before it became known as Macao.'},
         '香港': {'FET': 'location', 'definition': 'refers to Hong Kong, the Special Administrative Region of China and former British colony.'},
         'hk': {'FET': 'location', 'definition': 'refers to HK'},
         '鏡海': {'FET': 'location', 'definition': 'refers to an ancient poetic name for the waters around Macao, literally meaning "Mirror Sea.'},
