@@ -297,7 +297,6 @@ class AStemer(BaseStemer):
 
             for j in range(i + 1, length):
                 vb = word_definition_list[j][0]
-                print(va, vb)
 
                 if not self._matched(va, vb):
                     candidate_list.append(vb)
