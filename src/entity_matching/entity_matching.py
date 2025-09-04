@@ -7,8 +7,8 @@ import re
 import asyncio
 import logging
 from podbug.debug import Result_T, try_result
-from pydantic import BaseModel, Field
-import ast
+# from pydantic import BaseModel, Field
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 # class EntityMatchingInput(BaseModel):
 #     entity: str
@@ -319,12 +319,21 @@ class AStemer(BaseStemer):
         self.fa = list(range(n))  # equivalent to std::iota
         self.index_word_dict = {val: key for key, val in self.word_index_dict.items()}
 
-        tasks = [
-            self._async_link_to_most_similar(word_definition_list)
-            for word_definition_list in self.FET_data_dict.values()
-        ]
+        def run_async_in_thread(self, word_definition_list):
+            """Wrapper to run async function in a thread"""
+            return asyncio.run(self._async_link_to_most_similar(word_definition_list))
 
-        await async_tqdm.gather(*tasks, desc='processing blocking')
+        # Replace your code with:
+        with ThreadPoolExecutor(max_workers=4) as executor:
+            futures = [
+                executor.submit(run_async_in_thread, self, word_definition_list)
+                for word_definition_list in self.FET_data_dict.values()
+            ]
+            
+            results = []
+            for future in tqdm(as_completed(futures), total=len(futures), desc='processing blocking'):
+                result = future.result()
+                results.append(result)
 
 
 if __name__ == "__main__":
